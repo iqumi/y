@@ -10,9 +10,11 @@
 <body>
     <h1>Y</h1>
 
+    <div id="error-input">Ошибка данынй username занят</div>
+
     <form action="/username" method="post">
-        <label for="name"></label>>
+        <label for="name"></label>
         <input class="edit" type="text" id="name" placeholder="Введите username">
-        <button>Войти</button>
+        <button onclick='check()'>Войти</button>
     </form>
 </body>
