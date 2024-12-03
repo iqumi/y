@@ -1,8 +1,9 @@
-from typing import Union
 from fastapi import FastAPI
-from pydantic import BaseModel
 
-app = FastAPI()
+from database import lifespan  # для конекта к бд
+from services import UserService, ChatService, MessageService
+
+app = FastAPI(lifespan=lifespan)
 
 
 class User:
