@@ -1,5 +1,4 @@
 from configparser import ConfigParser
-from enum import Enum
 
 # глобальные переменные
 
@@ -26,14 +25,3 @@ DATABASES = {
 
 if DEBUG: DB = DATABASES["docker"]
 else: DB = DATABASES["prod"]
-
-
-"""Типы Enums"""
-
-class UserStatus(Enum):
-    USER = "user"
-    ADMIN = "admin"
-
-class ChatTypes(Enum):
-    PRIVATE = "private"
-    GROUP = "group"
