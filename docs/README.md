@@ -1,6 +1,6 @@
 # Документация
 
-Описание архитектуры программного продукта с помощью техники 4+1 views. 
+Описание архитектуры программного продукта с помощью техники 4+1 views.
 
 Согласно этой технике описывается 4+1 точка зрения (представления) различных заинтересованных сторон: таких как конечные пользователи, разработчики, системные инженеры и руководители проектов. Каждое представление это набор различных UML диаграмм и их описание. В процессе разработки диаграммы могут и будут активно изменяться.
 
@@ -8,23 +8,23 @@
 
 Общий обзор системы, ее функции. В системе присутствуют обычные пользователи, а так же администраторы, которые имеют ровно те же возможности + дополнительные. Администратор это **статус** который дается толко в беседах, вне своих бесед администратор остается пользователем:
 
-![Context](https://github.com/iqumi/y/blob/main/documentation/context-diagram.png)
+![Context](https://github.com/iqumi/y/blob/main/docs/context-diagram.png)
 
 ## Logical view
 
 Объекты данных, их аттрибуты и взаимосвязи в системе:
 
-![Logic](https://github.com/iqumi/y/blob/main/documentation/class-diagram.png)
+![Logic](https://github.com/iqumi/y/blob/main/docs/class-diagram.png)
 
 ## Proccess view
 
 Как обрабатываются данные. Диаграмма активности, описывает в каком порядке какие действия должны выполняться начиная с перехода пользователя на сайт. Не учитывает авторизацию, требует дальнейшего рассмотрения:
 
-![Activity](https://github.com/iqumi/y/blob/main/documentation/activity-diagram.png)
+![Activity](https://github.com/iqumi/y/blob/main/docs/activity-diagram.png)
 
 Диаграмма последовательности, описывает работу всей системы в целом, как ее части взаимодействуют между собой:
 
-![Sequence](https://github.com/iqumi/y/blob/main/documentation/sequence-diagram.png)
+![Sequence](https://github.com/iqumi/y/blob/main/docs/sequence-diagram.png)
 
 ## Development view
 
@@ -33,13 +33,13 @@
 - models файл python, содержит объекты которыми оперируем: сообщения, пользователи, чаты. Модели могут быть созданны как с помощью библиотеки pydantic так и в виде обычных классов, пока что диаграмма выглядит так
 - controllers файл python, содержит все те эндпоинты на которые fastapi ждет запрос от клиента
 
-![Component](https://github.com/iqumi/y/blob/main/documentation/component-diagram.png)
+![Component](https://github.com/iqumi/y/blob/main/docs/component-diagram.png)
 
 ## Physical view
 
 Физический вид интегрируемого и развертываемого приложения, как программа будет устанавливаться на физическое оборудование. Все запросы от клиента ловит nginx, который через прослойку uvicorn направляет запросы в app server то есть наш код на питоне.
 
-![Deployment](https://github.com/iqumi/y/blob/main/documentation/deployment-diagram.png)
+![Deployment](https://github.com/iqumi/y/blob/main/docs/deployment-diagram.png)
 
 ## About
 
