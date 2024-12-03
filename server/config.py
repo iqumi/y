@@ -6,7 +6,7 @@ config = ConfigParser()
 config.read('conf.cfg')
 
 
-DEBUG = True
+DEBUG = False
 
 DATABASES = {
     "docker": {
