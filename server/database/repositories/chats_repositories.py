@@ -16,7 +16,7 @@ class ChatnameRepository:
         return await self.repository.find(chatname)
 
     async def save(self, model: model) -> model:
-        self.repository.validate_starts_with(model.chatname, "Имя беседы")
+        self.repository.validate_starts_with(model.chatname)
         await self.repository.save(model.__dict__)
         return model
 

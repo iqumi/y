@@ -15,7 +15,7 @@ class UsernameRepository:
         return await self.repository.find(username)
 
     async def save(self, model: model) -> model:
-        self.repository.validate_starts_with(model.username, "Имя")
+        self.repository.validate_starts_with(model.username)
         await self.repository.save(model.__dict__)
         return model
 

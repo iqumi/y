@@ -17,11 +17,9 @@ class CassandraRepository[Model: m]:
         self.queries: ModelQueries = queries
         self.model: Type[Model] = model
 
-    @staticmethod
-    def validate_starts_with(name: str, field: str) -> None:
-        msg = f"{field} должно начинаться с символа '@'"
+    def validate_starts_with(self, name: str) -> None:
         if not name.startswith('@'):
-            raise ValueError(msg)
+            raise ValueError(self.model.__starts_with__)
 
     async def find(self, *args) -> Model:
         """Searching only for one thing"""

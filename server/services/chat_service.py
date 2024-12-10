@@ -40,25 +40,25 @@ class ChatService:
     ) -> Chat:
         """Создать новый приватный чат"""
         if sender_id > receiver_id:
-            sender_id, receiver_id = receiver_id, sender_id
-
-        m = cls.private.model(user1_id=sender_id, user2_id=receiver_id)
+            m = cls.private.model(receiver_id, sender_id)
+        else:
+            m = cls.private.model(sender_id, receiver_id)
         private = await cls.private.save(m)
 
         last_message = f"{sender_name}: {message}"
 
         await cls.chats.save(cls.chats.model(
-            user_id=sender_id,
-            chat_id=private.chat_id,
-            last_message=last_message,
-            name=receiver_name,
-            is_private=True))
-
-        return await cls.chats.save(cls.chats.model(
             user_id=receiver_id,
             chat_id=private.chat_id,
             last_message=last_message,
             name=sender_name,
+            is_private=True))
+
+        return await cls.chats.save(cls.chats.model(
+            user_id=sender_id,
+            chat_id=private.chat_id,
+            last_message=last_message,
+            name=receiver_name,
             is_private=True))
 
     @classmethod
@@ -68,7 +68,7 @@ class ChatService:
         chatname: str,
         description: str,
         name: str,
-    ) -> GroupChatUser:
+    ) -> Chat:
         """Создать новую беседу"""
         await cls.names.save(Chatname(chatname))
         group = await cls.groups.save(
@@ -78,14 +78,13 @@ class ChatService:
                 name=name,
                 nickname="",
                 is_admin=True))
-        await cls.chats.save(
+        return await cls.chats.save(
             cls.chats.model(
                 user_id=user_id,
                 chat_id=group.chat_id,
                 last_message="Чат только что создан",
                 name=name,
                 is_private=False))
-        return group
 
     def add_user(self):
         pass

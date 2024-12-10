@@ -2,26 +2,29 @@ from configparser import ConfigParser
 
 # глобальные переменные
 
-config = ConfigParser()
-config.read('conf.cfg')
-
 
 DEBUG = True
 
+prodconf = ConfigParser()
+prodconf.read('conf.cfg')
+
+testconf = ConfigParser()
+testconf.read('config.cfg')
+
 DATABASES = {
-    "docker": {
-        "USERNAME": "cassandra",
-        "PASSWORD": "cassandra",
-        "IP": "database",
-        "PORT": 9042
-    },
     "prod": {
-        "USERNAME": config['DEFAULT']['USERNAME'],
-        "PASSWORD": config['DEFAULT']['PASSWORD'],
-        "IP": config['DEFAULT']['IP'],
-        "PORT": config['DEFAULT']['PORT']
+        "USERNAME": prodconf['DEFAULT']['USERNAME'],
+        "PASSWORD": prodconf['DEFAULT']['PASSWORD'],
+        "IP": prodconf['DEFAULT']['IP'],
+        "PORT": prodconf['DEFAULT']['PORT']
+    },
+    "test": {
+        "USERNAME": testconf['TEST']['USERNAME'],
+        "PASSWORD": testconf['TEST']['PASSWORD'],
+        "IP": testconf['TEST']['IP'],
+        "PORT": testconf['TEST']['PORT']
     }
 }
 
-if DEBUG: DB = DATABASES["docker"]
+if DEBUG: DB = DATABASES["test"]
 else: DB = DATABASES["prod"]

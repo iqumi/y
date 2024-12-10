@@ -9,6 +9,7 @@ from .base_model import Model
 class Chatname(Model):
     chatname: str
     chat_id: UUID4 = field(default_factory=uuid4)
+    __starts_with__ = "Имя беседы должно начинаться с символа '@'"
     __already_exist__ = "Беседа с таким адресом уже существует"
     __unknown__ = "Такой беседы не существует"
 

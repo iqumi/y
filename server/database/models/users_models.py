@@ -9,6 +9,7 @@ from .base_model import Model
 class Username(Model):
     username: str
     user_id: UUID4 = field(default_factory=uuid4)
+    __starts_with__ = "Имя пользователя должно начинаться с символа '@'"
     __already_exist__ = "Пользователь с таким username уже существует"
     __unknown__ = "Такого пользователя не существует"
 

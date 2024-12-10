@@ -34,7 +34,7 @@ class ChatnameQueries:
 
 
 class UserQueries:
-    GET = "SELECT * FROM users WHERE user_id=?"
+    FIND = "SELECT * FROM users WHERE user_id=?"
     SAVE = """
         INSERT INTO users (
             user_id, bio, name
