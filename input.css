@@ -52,7 +52,7 @@ input {
     height: 100%;
     position: fixed;
     overflow-y: auto;
-    border-right: 2px solid rgb(255,250,240);
+    border-right: 1px solid rgb(255,250,240);
     padding-left: 1rem;
     padding-right: 2rem;
     white-space: nowrap;
@@ -80,4 +80,9 @@ input {
 
 .button:hover {
     background: rgb(56, 56, 56);
+}
+
+.dividing-line {
+    margin-top: 1rem;
+    color:  rgb(255,250,240);
 }
