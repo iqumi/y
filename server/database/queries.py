@@ -24,9 +24,9 @@ class UserQueries:
             user_id, name, email, bio
         ) VALUES (
             %(user_id)s,
-            %(name)s
+            %(name)s,
             %(email)s,
-            %(bio)s,
+            %(bio)s
         ) IF NOT EXISTS"""
     CREATE = """
         CREATE TABLE IF NOT EXISTS users (
@@ -98,7 +98,7 @@ class MessageQueries:
             %(read_at)s,
             %(sender)s,
             %(data)s,
-            %(text)s,
+            %(text)s
         ) IF NOT EXISTS
         """
     CREATE = """
