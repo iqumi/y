@@ -5,26 +5,15 @@ from configparser import ConfigParser
 
 DEBUG = True
 
-prodconf = ConfigParser()
-prodconf.read('conf.cfg')
+conf = ConfigParser()
 
-testconf = ConfigParser()
-testconf.read('config.cfg')
+if DEBUG: conf.read('config.cfg')
+else: conf.read('conf.cfg')
 
-DATABASES = {
-    "prod": {
-        "USERNAME": prodconf['DEFAULT']['USERNAME'],
-        "PASSWORD": prodconf['DEFAULT']['PASSWORD'],
-        "IP": prodconf['DEFAULT']['IP'],
-        "PORT": prodconf['DEFAULT']['PORT']
-    },
-    "test": {
-        "USERNAME": testconf['TEST']['USERNAME'],
-        "PASSWORD": testconf['TEST']['PASSWORD'],
-        "IP": testconf['TEST']['IP'],
-        "PORT": testconf['TEST']['PORT']
-    }
+DB = conf["DATABASE"]
+
+CACHE = {
+    "host": conf["CACHE"]["HOST"],
+    "password": conf["CACHE"]["PASSWORD"],
+    "port": int(conf["CACHE"]["PORT"])
 }
-
-if DEBUG: DB = DATABASES["test"]
-else: DB = DATABASES["prod"]

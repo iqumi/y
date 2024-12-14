@@ -16,6 +16,18 @@ services:
       timeout: 10s
       retries: 10
 
+  cache:
+    image: valkey/valkey:latest
+    container_name: chat-cache
+    volumes:
+      - "./conf/valkey.conf:/etc/valkey/valkey.conf"
+      - "./data/valkey/:/var/lib/valkey"
+    ports:
+      - "6379:6379"
+    command: ["valkey-server", "/etc/valkey/valkey.conf"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+
   server:
     image: python:3.12-slim
     container_name: chat-server
@@ -24,6 +36,8 @@ services:
       - ./:/app
     depends_on:
       database:
+        condition: service_healthy
+      cache:
         condition: service_healthy
     command: bash -c "
       pip install -r requirements.txt &&
@@ -35,7 +49,7 @@ services:
       test: ["CMD", "pytest", "--version"]
       interval: 30s
       timeout: 10s
-      retries: 10
+      retries: 20
 
   web:
     image: nginx:latest
