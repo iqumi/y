@@ -2,61 +2,60 @@ import pytest
 from cassandra.query import SimpleStatement
 
 from services import UserService, ChatService, MessageService
+from database import Cassandra, Valkey
 from database import models as m
-from database import Cassandra
 
 
 @pytest.fixture
 async def user():
-    Cassandra.session.execute(SimpleStatement("TRUNCATE users_by_name;"))
+    Valkey.session.flushdb()
+    Cassandra.session.execute(SimpleStatement("TRUNCATE tags;"))
     Cassandra.session.execute(SimpleStatement("TRUNCATE users;"))
-    async def create(username: str, name: str) -> m.User:
-        return await UserService.save(username, name)
-    return create
+    return UserService.create_user
 
 
 @pytest.fixture
 async def chats(user):
-    Cassandra.session.execute(SimpleStatement("TRUNCATE chats_by_name;"))
-    Cassandra.session.execute(SimpleStatement("TRUNCATE group_chat_users;"))
-    Cassandra.session.execute(SimpleStatement("TRUNCATE private_chats;"))
+    Valkey.session.flushdb()
+    Cassandra.session.execute(SimpleStatement("TRUNCATE tags;"))
+    Cassandra.session.execute(SimpleStatement("TRUNCATE group_chats;"))
     Cassandra.session.execute(SimpleStatement("TRUNCATE chats;"))
+
     john = await user("@john", "John")
     jack = await user("@jack", "Jack")
     mike = await user("@mike", "Mike")
+
+    john_group = await ChatService.create_group_chat(
+        user_id=john.user_id,
+        chatname="@cool_club",
+        name="cool name")
+    john_private = await ChatService.create_private_chat(
+        sender_id=john.user_id,
+        receiver_id=jack.user_id)
+    jack_private = await ChatService.create_private_chat(
+        sender_id=jack.user_id,
+        receiver_id=mike.user_id)
+
     return {
         "john": {
-            "id": john.user_id,
-            "chats": [
-                await ChatService.create_private_chat(
-                    sender_id=john.user_id,
-                    receiver_id=jack.user_id,
-                    message="hello",
-                    sender_name=john.name,
-                    receiver_name=jack.name),
-                await ChatService.create_group_chat(
-                    user_id=john.user_id,
-                    chatname="@club",
-                    description="",
-                    name="")
-            ]
+            "user": john,
+            "chats": {
+                "private": john_private,
+                "group": john_group
+            }
         },
         "jack": {
-            "id": jack.user_id,
-            "chats": [
-                await ChatService.create_private_chat(
-                    sender_id=jack.user_id,
-                    receiver_id=mike.user_id,
-                    message="hello",
-                    sender_name=jack.name,
-                    receiver_name=mike.name)
-            ]
+            "user": jack,
+            "chats": {
+                "private": jack_private
+            }
         }
     }
 
 
 @pytest.fixture
 async def messages(chats):
+    Valkey.session.flushdb()
     Cassandra.session.execute(SimpleStatement("TRUNCATE unread_messages;"))
     Cassandra.session.execute(SimpleStatement("TRUNCATE messages;"))
     # receiver мы получаем из всех чатов
