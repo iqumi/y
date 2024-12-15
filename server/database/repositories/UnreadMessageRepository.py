@@ -20,6 +20,5 @@ class UnreadMessageRepository:
         await self.repository.save(model.__dict__)
         return model
 
-    async def delete(self, chat_id: UUID4, message_id: UUID4) -> bool:
-        return await self.repository.delete(
-            chat_id=chat_id, message_id=message_id)
+    async def delete(self, user_id: UUID4) -> bool:
+        return await self.repository.delete(user_id=user_id)

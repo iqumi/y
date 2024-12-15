@@ -84,7 +84,7 @@ class GroupChatQueries:
 
 
 class MessageQueries:
-    GET = "SELECT * FROM messages WHERE chat_id=? AND yaer_month=?"
+    GET = "SELECT * FROM messages WHERE chat_id=? AND year_month=?"
     FIND = GET + " AND message_id=?"
     DELETE = "DELETE FROM messages WHERE chat_id=? and year_month=? AND message_id=?"
     SAVE = """
@@ -118,7 +118,8 @@ class MessageQueries:
 
 class UnreadMessageQueries:
     GET = "SELECT * FROM unread_messages WHERE user_id=?"
-    DELETE = "DELETE FROM unread_messages WHERE user_id=? and chat_id=? AND message_id=?"
+    DELETE = "DELETE FROM unread_messages WHERE user_id=?"
+    DELETE_ONE = "DELETE FROM unread_messages WHERE user_id=? and chat_id=? AND message_id=?"
     SAVE = """
         INSERT INTO unread_messages (
             user_id, chat_id, message_id, created_at, sender, text
@@ -128,7 +129,7 @@ class UnreadMessageQueries:
             %(message_id)s,
             %(created_at)s,
             %(sender)s,
-            %(text)s,
+            %(text)s
         ) IF NOT EXISTS
         """
     CREATE = """

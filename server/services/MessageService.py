@@ -18,19 +18,18 @@ class MessageService:
     async def get_chat_messages(
         cls,
         chat_id: UUID4,
-        year_month: str = datetime.now().strftime("%Y-%m")
-    ) -> list[Message]:
+        year: int,
+        month: int
+    ) -> AsyncIterator[Message]:
         """Получить все сообщения в чате по chat_id"""
-        l = []
+        year_month = datetime(year, month, 1).strftime("%Y-%m")
         async for chat in cls.messages.get(chat_id, year_month):
-            l.append(chat)
-        return l
+            yield chat
 
     @classmethod
     async def send_message(
         cls,
         chat_id: UUID4,
-        receiver: UUID4,
         sender: UUID4,
         text: str,
         data: str | None = None,
@@ -45,32 +44,43 @@ class MessageService:
         cls,
         chat_id: UUID4,
         created_at: datetime,
-        message_id: UUID4
-    ) -> None:
-        pass
+        message_id: UUID4,
+    ) -> bool:
+        year_month = created_at.strftime("%Y-%m")
+        return await cls.messages.delete(
+            chat_id, year_month, message_id)
 
     @classmethod
     async def get_user_unread_messages(
-        cls, user_id: UUID4
+        cls,
+        user_id: UUID4
     ) -> AsyncIterator[UnreadMessage]:
         """Получить все непрочитанные сообщения пользователя"""
         async for chat in cls.unread_messages.get(user_id):
             yield chat
+        await cls._remove_from_unread(user_id)
 
     @classmethod
-    async def _remove_from_unread(cls):
-        pass
-
-    @classmethod
-    async def save_message_to_unread(
-        cls, message: Message
+    async def save_to_unread(
+        cls,
+        receiver: UUID4,
+        message: Message
     ) -> UnreadMessage:
         """Сохранить сообщение в непрочитанные"""
         return await cls.unread_messages.save(UnreadMessage(
-            user_id=message.receiver,
+            user_id=receiver,
             chat_id=message.chat_id,
             message_id=message.message_id,
             created_at=message.created_at,
             sender=message.sender,
             text=message.text
         ))
+
+    @classmethod
+    async def _remove_from_unread(cls, user_id: UUID4) -> bool:
+        """
+        Из непрочитанных удаляем все,
+        фронт разберется как это отображать
+        счетчиски и прочее
+        """
+        return await cls.unread_messages.delete(user_id=user_id)

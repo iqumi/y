@@ -84,5 +84,18 @@ class ChatService:
             last_message=msg
         )
 
-    def add_user(self):
+    @classmethod
+    def add_user(cls):
+        pass
+
+    @classmethod
+    def remove_user(cls):
+        pass
+
+    @classmethod
+    def delete_group_chat(cls):
+        pass
+
+    @classmethod
+    def delete_private_chat(cls):
         pass

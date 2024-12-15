@@ -63,6 +63,4 @@ class CassandraRepository[Model: m]:
     async def delete(self, **kwargs) -> bool:
         future = Cassandra.session.execute_async(
             Cassandra.session.prepare(self.queries.DELETE), kwargs)
-        if future.result().rowcount == 0:
-            raise Exception(self.model.__delete_error__)
         return True

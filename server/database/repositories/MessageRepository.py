@@ -1,3 +1,4 @@
+from types import NoneType
 from typing import AsyncIterator
 from pydantic import UUID4
 
@@ -32,3 +33,14 @@ class MessageRepository:
     async def save(self, model: model) -> model:
         await self.repository.save(model.__dict__)
         return model
+
+    async def delete(
+        self,
+        chat_id: UUID4,
+        year_month: str,
+        message_id: UUID4
+    ) -> bool:
+        return await self.repository.delete(
+            chat_id=chat_id,
+            year_month=year_month,
+            message_id=message_id)
