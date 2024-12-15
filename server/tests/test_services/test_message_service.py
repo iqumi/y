@@ -5,11 +5,9 @@ from services.MessageService import MessageService
 
 
 class TestMessageService:
-
-    def __init__(self):
-        date = datetime.now()
-        self.year = date.year
-        self.month = date.month
+    date = datetime.now()
+    year = date.year
+    month = date.month
 
     @pytest.mark.asyncio
     async def test_message_saves_and_returns(self, messages, john_chats):

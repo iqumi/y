@@ -1,10 +1,9 @@
-fastapi==0.115.5
 fastapi[standard]==0.115.5
 fastapi-users[redis]==14.0.0
 pydantic~=2.9.2
-uvicorn==0.32.0
+uvicorn[standard]==0.32.0
+websockets==14.1
 scylla-driver==3.28.0
 redis==5.2.1
 pytest-asyncio==0.24.0
-httpx==0.28.0
 pytest==8.3.4
