@@ -4,32 +4,43 @@
 
 Онлайн платформа для обмена сообщениями в реальном времени, которая позволяет пользователям общаться друг с другом, а так же в беседах через текстовые сообщения и медиафайлы.
 
-За подробностями работы веб приложения: [документация](https://github.com/iqumi/y/blob/main/docs/README.md)
 
 ## Как запустить
 
-Демо: comming...
+Для запуска вам необходимо иметь:
+- docker
+- docker compose
+- make
 
-Собрать все у себя, локально:
-
-```bash
-git clone https://github.com/iqumi/y && cd y
-docker compose up -d
-```
-
-Запустить только бэк, при наличии `server/conf.cfg`:
+Для начала склонируйте репозиторий:
 
 ```bash
 git clone https://github.com/iqumi/y && cd y
-python -m venv env
-. env/bin/activate
-python -m pip install -r requirements.txt
-cd server
-fastapi dev main.py
+```
+
+А после запустите проект следующей командой:
+
+```bash
+make up
+```
+
+Чтобы остановить и удалить докер контейнеры:
+
+```bash
+make down
 ```
 
 
-#### Структура
+## Тестирование
+
+Во время запуска тестов поднимается тестовая бд
+
+```bash
+make test
+```
+
+
+## Структура
 
 ```
 www/                      # статические файлы веб страницы

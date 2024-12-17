@@ -1,11 +1,9 @@
-from contextlib import asynccontextmanager
 import logging
 
 from cassandra.cluster import Cluster, NoHostAvailable, Session
 from cassandra.connection import AuthenticationFailed
 from cassandra.query import dict_factory
 from cassandra.auth import PlainTextAuthProvider
-from fastapi import FastAPI
 
 from database.queries import QUERIES, KEYSPACE
 from config import DEBUG, DB
@@ -21,7 +19,7 @@ class Cassandra:
         self.username = DB["USERNAME"]
         self.password = DB["PASSWORD"]
         self.ip = DB["IP"]
-        self.port = DB["PORT"]
+        self.port = int(DB["PORT"])
 
     def __enter__(self):
         """Connect to database"""
@@ -52,10 +50,3 @@ class Cassandra:
     def __exit__(self, type, value, traceback):
         """Shutdown db connection"""
         Cassandra.session.shutdown()
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Will be executed before and after our app"""
-    with Cassandra():
-        yield

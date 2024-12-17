@@ -1,3 +1,3 @@
-from .user_service import UserService
-from .chat_service import ChatService
-from .message_service import MessageService
+from .UserService import UserService
+from .ChatService import ChatService
+from .MessageService import MessageService

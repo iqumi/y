@@ -1,1 +1,2 @@
-from .database import Cassandra, lifespan
+from .database import Cassandra
+from .lifespan import Valkey, lifespan

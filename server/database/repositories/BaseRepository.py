@@ -17,11 +17,9 @@ class CassandraRepository[Model: m]:
         self.queries: ModelQueries = queries
         self.model: Type[Model] = model
 
-    @staticmethod
-    def validate_starts_with(name: str, field: str) -> None:
-        msg = f"{field} должно начинаться с символа '@'"
+    def validate_starts_with(self, name: str) -> None:
         if not name.startswith('@'):
-            raise ValueError(msg)
+            raise ValueError(self.model.__starts_with__)
 
     async def find(self, *args) -> Model:
         """Searching only for one thing"""
@@ -65,6 +63,4 @@ class CassandraRepository[Model: m]:
     async def delete(self, **kwargs) -> bool:
         future = Cassandra.session.execute_async(
             Cassandra.session.prepare(self.queries.DELETE), kwargs)
-        if future.result().rowcount == 0:
-            raise Exception(self.model.__delete_error__)
         return True
