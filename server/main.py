@@ -52,6 +52,14 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
             if len(first_n_messages_to_return) != 0:
                 # добейте выживших
                 await websocket.send_json(first_n_messages_to_return)
+        elif action == "save_message":
+            chat_id = data["chat_id"]
+            sender_id = data["sender_id"]
+            text = data["text"]
+            await MessageService.send_message(
+                chat_id, 
+                sender_id, 
+                text)
                 
 
             
