@@ -4,6 +4,9 @@ from fastapi.responses import HTMLResponse
 from database import lifespan  # для конекта к бд
 from services import UserService, ChatService, MessageService
 
+from pydantic import UUID4
+
+
 app = FastAPI(lifespan=lifespan)
 
 
@@ -69,4 +72,10 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
                 created_at, 
                 message_id)
             await websocket.send_text("OK")        
-
+        elif action == "show_me_unread_messages":
+            user_id: UUID4 = data["user_id"]
+            messages = []
+            async for i in MessageService.get_user_unread_messages(user_id):
+                messages.append(i)
+            await websocket.send_json(messages)
+            
