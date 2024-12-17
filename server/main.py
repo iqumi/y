@@ -60,6 +60,13 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
                 chat_id, 
                 sender_id, 
                 text)
-                
+        elif action == "delete_message":
+            chat_id = data["chat_id"]
+            created_at = data["created_at"]
+            message_id = data["message_id"]
+            await MessageService.delete_message(
+                chat_id, 
+                created_at, 
+                message_id)
+            await websocket.send_text("OK")        
 
-            
